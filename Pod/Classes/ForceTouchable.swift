@@ -75,15 +75,15 @@ public class ForceTouchDelegate: NSObject, UIViewControllerPreviewingDelegate {
 
     super.init()
 
-    if forceTouchable.traitCollection.forceTouchCapability == .Available {
-      forceTouchable.registerForPreviewingWithDelegate(self, sourceView: forceTouchable.view)
+    if forceTouchable.traitCollection.forceTouchCapability == .available {
+      forceTouchable.registerForPreviewingWithDelegate(delegate: self, sourceView: forceTouchable.view)
     }
   }
 
-  public func previewingContext(previewingContext: UIViewControllerPreviewing,
+  public func previewingContext(_ previewingContext: UIViewControllerPreviewing,
     viewControllerForLocation location: CGPoint) -> UIViewController? {
 
-      guard let forceTouchPreview = forceTouchable.forceTouchPreviewForLocation(location) else {
+      guard let forceTouchPreview = forceTouchable.forceTouchPreviewForLocation(location: location) else {
         return nil
       }
 
@@ -92,14 +92,14 @@ public class ForceTouchDelegate: NSObject, UIViewControllerPreviewingDelegate {
         return nil
       }
       previewingContext.sourceRect = touchedSuperView
-        .convertRect(forceTouchPreview.touchedView.frame, toView: forceTouchable.view)
+        .convert(forceTouchPreview.touchedView.frame, to: forceTouchable.view)
 
       return forceTouchPreview.previewViewController
   }
 
-  public func previewingContext(previewingContext: UIViewControllerPreviewing,
-    commitViewController viewControllerToCommit: UIViewController) {
-      forceTouchable.showViewController(viewControllerToCommit, sender: self)
+  public func previewingContext(_ previewingContext: UIViewControllerPreviewing,
+                                commit viewControllerToCommit: UIViewController) {
+      forceTouchable.showViewController(vc: viewControllerToCommit, sender: self)
   }
 
 }
